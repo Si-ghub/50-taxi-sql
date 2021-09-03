@@ -34,11 +34,11 @@ app.init = async () => {
     // isspausdinti, koki atstuma nuvaziavo visu kelioniu metu
     sql = 'SELECT `distance` FROM `trips`';
     [rows] = await connection.execute(sql);
-    let keliones = 0;
+    let visosKeliones = 0;
     for (let index = 0; index < rows.length; index++) {
-        keliones += +rows[index].distance;
+        visosKeliones += +rows[index].distance;
     }
-    console.log(`Visu kelioniu metu nuvaziuota ${keliones} km`);
+    console.log(`Visu kelioniu metu nuvaziuota ${visosKeliones} km`);
 
     // isspausdinti, koks yra vidutinis Jono ivertinimas
     sql = 'SELECT `rating` FROM `trips` WHERE `driver` LIKE "Jonas"';
@@ -57,7 +57,7 @@ app.init = async () => {
     for (let index = 0; index < rows.length; index++) {
         visosKainos += +rows[index].price; // konvertuoja stringe esanti skaiciu i tikra skaiciu
     }
-    const vidutineKelioniuKaina = visosKainos / keliones;
+    const vidutineKelioniuKaina = visosKainos / rows.length;
     console.log(`Vidutine kelioniu kaina yra ${vidutineKelioniuKaina.toFixed(2)} EUR/km.`);
 }
 
