@@ -17,7 +17,7 @@ app.init = async () => {
     sql = 'SELECT * FROM `trips`';
     [rows] = await connection.execute(sql);
     const kelioniuSkaicius = rows.length;
-    console.log(`Visi taksiskai bendrai ivykde ${kelioniuSkaicius}  keliones`);
+    console.log(`Visi taksiskai bendrai ivykde ${kelioniuSkaicius} keliones`);
 
     // isspausdinti, visu taksistu vardus
     sql = 'SELECT `driver` FROM `trips`';
@@ -29,15 +29,38 @@ app.init = async () => {
             taksistuVardai.push(vardas);
         }
     }
-    console.log(`Taksistais dirba: ${taksistuVardai.join(', ')}. `);
+    console.log(`Taksistais dirba: ${taksistuVardai.join(', ')}.`);
 
     // isspausdinti, koki atstuma nuvaziavo visu kelioniu metu
+    sql = 'SELECT `distance` FROM `trips`';
+    [rows] = await connection.execute(sql);
+    let keliones = 0;
+    for (let index = 0; index < rows.length; index++) {
+        keliones += +rows[index].distance;
+    }
+    console.log(`Visu kelioniu metu nuvaziuota ${keliones} km`);
 
     // isspausdinti, koks yra vidutinis Jono ivertinimas
+    sql = 'SELECT `rating` FROM `trips` WHERE `driver` LIKE "Jonas"';
+    [rows] = await connection.execute(sql);
+    let vairuotojoKeliones = 0;
+    for (let index = 0; index < rows.length; index++) {
+        vairuotojoKeliones += +rows[index].rating;
+    }
+    const vidurkis = vairuotojoKeliones / rows.length;
+    console.log(`Jono ivertinimas yra ${vidurkis} zvaigzdutes.`);
 
     // isspausdinti, kokia yra vidutine kelioniu kaina
-
-
+    sql = 'SELECT `price` FROM `trips`';
+    [rows] = await connection.execute(sql);
+    let visosKainos = 0;
+    for (let index = 0; index < rows.length; index++) {
+        visosKainos += +rows[index].price;
+    }
+    const kelioniuVidurkis = keliones / rows.length;
+    const kainosVidurkis = visosKainos / rows.length;
+    const vidutineKelioniuKaina = kelioniuVidurkis * kainosVidurkis;
+    console.log(`Vidutine kelioniu kaina yra ${vidutineKelioniuKaina.toFixed(2)} EUR/km.`);
 }
 
 app.init();
