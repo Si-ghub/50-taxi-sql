@@ -55,11 +55,9 @@ app.init = async () => {
     [rows] = await connection.execute(sql);
     let visosKainos = 0;
     for (let index = 0; index < rows.length; index++) {
-        visosKainos += +rows[index].price;
+        visosKainos += +rows[index].price; // konvertuoja stringe esanti skaiciu i tikra skaiciu
     }
-    const kelioniuVidurkis = keliones / rows.length;
-    const kainosVidurkis = visosKainos / rows.length;
-    const vidutineKelioniuKaina = kelioniuVidurkis * kainosVidurkis;
+    const vidutineKelioniuKaina = visosKainos / keliones;
     console.log(`Vidutine kelioniu kaina yra ${vidutineKelioniuKaina.toFixed(2)} EUR/km.`);
 }
 
