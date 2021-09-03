@@ -13,14 +13,29 @@ app.init = async () => {
     let sql = '';
     let rows = [];
 
+    // isspausdinti, kiek buvo kelioniu
+    sql = 'SELECT * FROM `trips`';
+    [rows] = await connection.execute(sql);
+    const kelioniuSkaicius = rows.length;
+    console.log(`Visi taksiskai bendrai ivykde ${kelioniuSkaicius}  keliones`);
 
+    // isspausdinti, visu taksistu vardus
+    sql = 'SELECT `driver` FROM `trips`';
+    [rows] = await connection.execute(sql);
+    let taksistuVardai = [];
+    for (let index = 0; index < rows.length; index++) {
+        const vardas = rows[index].driver;
+        if (!taksistuVardai.includes(vardas)) {
+            taksistuVardai.push(vardas);
+        }
+    }
+    console.log(`Taksistais dirba: ${taksistuVardai.join(', ')}. `);
 
-    // perskaitom ka turim is pradziu
-    sql = 'SELECT * \ FROM `trips`'
-    [rows] = await data.db.execute(sql);
-    console.log(rows);
+    // isspausdinti, koki atstuma nuvaziavo visu kelioniu metu
 
+    // isspausdinti, koks yra vidutinis Jono ivertinimas
 
+    // isspausdinti, kokia yra vidutine kelioniu kaina
 
 
 }
